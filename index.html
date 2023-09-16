@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Crimson Text', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: #121212;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            border-bottom:2px solid white;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #ffffff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: limegreen;
+        }
+
+        /* Section container styles */
+        .section-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 2rem;
+            justify-content: center;
+        }
+
+        /* About Me section styles */
+        .about-me {
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: 0 0 15px 15px;
+            position: relative;
+            background-image: url('images/background.gif');
+            background-size: cover;
+            background-position: center;
+            animation: backgroundAnimation 20s infinite;
+        }
+
+        .about-me h1 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: limegreen;
+            text-shadow: 0.5px 0.5px white
+        }
+
+        .about-me p {
+            margin-top: 0.5rem;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 2rem;
+            text-shadow: 1px 1px black;
+        }
+
+        /* Profile image styles */
+        .profile-img {
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            /*margin: 1rem auto;*/
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Square section styles (Education and Experience) */
+        .square-section {
+            background-color: #121212;
+            color: #ffffff;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            flex: 1;
+            margin: 1rem;
+            min-width: 300px;
+            border: 2px solid #ffffff;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .square-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-color: limegreen;
+        }
+
+        .square-section p {
+            color: #555;
+            line-height: 1.6;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .education {
+            background-image: url('images/edu.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .education-header-image {
+            max-width: 40px;
+            max-height: 30px;
+            display: inline-flex;
+            margin-left: 0rem;
+        }
+
+        .education h2 {
+            color: #ffffff;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .education p {
+            color: #ffffff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .education::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .experience {
+            background-image: url('images/exp.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .experience-header-image {
+            max-width: 40px;
+            max-height: 30px;
+            display: inline-flex;
+            margin-left: 0rem;
+        }
+
+        .experience h2 {
+            color: #ffffff;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .experience p {
+            color: #ffffff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* Project section styles */
+        .project-section {
+            background-color: #266618;
+            background-image: url('images/green.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid lime;
+            color: black;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-header {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            text-align: center;
+            margin: 0;
+            display: inline;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .project-header-image {
+            max-width: 50px;
+            max-height: 50%;
+            display: inline-flex;
+            margin-left: 0rem;
+        }
+
+        .project-container {
+            background-color: #121212;
+            color: #ffffff;
+            border-radius: 15px;
+            padding: 1rem;
+            flex: 1;
+            margin: 0 1rem;
+            text-align: center;
+            border: 2px solid rgb(255, 255, 255);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            margin-bottom: 2rem;
+            height: 400px;
+        }
+
+        .project-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-color: lime;
+        }
+
+        .project-container img {
+            width: 250px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid rgb(255, 255, 255);
+            margin-bottom: 1rem;
+            border-radius: 15px;
+        }
+
+        .project-container h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            color: lime;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .project-container p {
+            color: #ffffff;
+            line-height: 1.6;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .project-container a{
+            color:limegreen;
+        }
+
+        .project-container a:hover{
+            color: green;
+        }
+
+
+        /* Contact section styles */
+        #contact {
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 15px;
+            min-width: 300px;
+            max-height: 600px;
+        }
+
+        /* Contact form styles */
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="subject"],
+        form textarea {
+            width: 98%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        form button[type="submit"] {
+            background-color: limegreen;
+            color: #fff;
+            font-size: medium;
+            font-weight: bold;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: green;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #292b2c;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            border-radius: 15px 15px 0 0;
+        }
+
+        /* Social icons styles */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .social-icons a:hover {
+            color: limegreen;
+        }
+
+        .social-icons img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid limegreen;
+            padding: 10px;
+        }
+
+        .social-icons p {
+            margin: 5px 0;
+        }
+
+        /* Skills section styles */
+        .skills {
+            background-color: #121212;
+            border: 2px solid #ffffff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .skills-header {
+            font-size: 2rem;
+            margin: 0;
+            padding: 1rem;
+            width: 100%;
+            text-align: center;
+            display: inline;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+            color: limegreen;
+        }
+
+        .skills-header img {
+            max-width: 50px;
+            max-height: 50%;
+            display: inline-flex;
+            margin-left: 0rem;
+        }
+
+        .skills-container {
+            background-color: #121212;
+            border: 2px solid #ffffff;
+            padding: 1rem;
+            flex: 1;
+            margin: 0.5rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .skills-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .skills-container img {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 0 auto 0.5rem;
+        }
+
+        .skills-container p {
+            color: #ffffff;
+            font-family:Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+
+        .skills-container p2 {
+            color: red;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .skills-container p3 {
+            color: yellow;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .skills-container p4 {
+            color: lawngreen;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .contact h2 {
+            color: limegreen;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .contact-header-image {
+            max-width: 40px;
+            max-height: 30px;
+            display: inline-flex;
+            margin-left: 0.1rem;
+        }
+
+        .contact p {
+            color: lime;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .skills .skills-header {
+            color: limegreen;
+        }
+    </style>
+    <title>Your Name - Portfolio</title>
+</head>
+
+<body>
+    <!-- Sticky Navbar -->
+    <div class="navbar">
+        <a href="#about-me">About Me</a>
+        <a href="#education">Education</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact Me</a>
+    </div>
+    <div id="about-me" class="about-me">
+        <h1>Steven Rud</h1>
+        <p>Computer Science Undergraduate Student at Brandeis University</p>
+        <img src="images/profilepic.jpg" alt="Profile Picture" class="profile-img">
+        <h2>About Me</h2>
+        <p>I am originally from New York City and now I am studying Computer Science at Brandeis University. 
+            I've always admired Mathematics and the Sciences for their intrigue, purity, and application in
+            the world. I have culminated my interest in these two fields into the study of Computer Science.
+            I enjoy Computer Science for the process of problem solving various complex tasks to reach an end
+             goal in a project that can as well be applied in the real world. </p>
+        <!-- Social Icons -->
+        <div class="social-icons">
+            <a href="https://github.com/StevenRud7?tab=repositories" target="_blank">
+                <img src="images/github.png" alt="GitHub">
+                <p>Explore my work on GitHub</p>
+            </a>
+            <a href="https://www.linkedin.com/in/steven-rud7/" target="_blank">
+                <img src="images/linkedin.png" alt="LinkedIn">
+                <p>Check Out my LinkedIn</p>
+            </a>
+            <a href="images/Steven Rud Resume.pdf" target="_blank">
+                <img src="images/resume.png" alt="Resume">
+                <p>View my Resume (PDF)</p>
+            </a>
+        </div>
+    </div>
+
+    <div id="education" class="section-container">
+        <div class="square-section education">
+            <h2>Education <img src="images/Hedu.png" alt="Education Header Image" class="education-header-image"></h2>
+            <p>B.S. in Computer Science, Brandeis University 2020 - Now (Expected Graduation December 2023)</p>
+            <p>I have undergone a heavy courseload in Computer Science consisting of the study of Algorithms, Data Structures, Machine Learning, Natural Language Processing, Operating Systems, and general software engineering techniques.</p>
+        </div>
+        <div id="experience" class="square-section experience">
+            <h2>Experience <img src="images/Hexp.png" alt="Experience Image" class="experience-header-image"></h2>
+            <p>Asdan Volunteering/Peer Mentoring at Tabeetha High School Tel Aviv Israel (2018 - 2020) </p>
+            <p>Assisted 8th grade students one-on-one helping them improve their math skills. Reinforced classwork presented by the teacher, helped with homework, and prepared students for tests.</p>
+        </div>
+    </div>
+
+    <div id="projects" class="project-section">
+        <div class="project-header">
+            <h2>Projects <img src="images/Hproj.png" alt="Project Header Image" class="project-header-image"></h2>
+        </div>
+        <div class="project-container">
+            <img src="images/pacman.png" alt="Project 1">
+            <h3>Custom Pac-Man Game Maker</h3>
+            <p>Created with Java you can build and play the classic game of Pac-Man on your own custom map. <a
+                    href="https://github.com/StevenRud7/Custom-Pac-Man-Game-Maker">View Project</a></p>
+        </div>
+        <div class="project-container">
+            <img src="images/project2.png" alt="Project 2">
+            <h3>LEGO Set Finder Website</h3>
+            <p>This Website App, created with JavaScript and mongoDB to store the data, is used to help find any LEGO set from 1964 - 2021 using various filters and record wanted and owned sets. 
+                <a href="https://github.com/StevenRud7/LEGO-Website">View Project</a></p>
+        </div>
+        <div class="project-container">
+            <img src="images/project3.png" alt="Project 3">
+            <h3>Attention-Based Neural Machine Translation from English to Pig-Latin</h3>
+            <p>Created in Python using Natural Language Processing techniques, this attention-based neural machine translates from English to Pig-Latin.
+                <a href="https://github.com/StevenRud7/Attention-Based_Neural_Machine_Translation">View Project</a></p>
+        </div>
+    </div>
+
+    <div id="skills" class="section-container">
+        <!-- Revamped Skills Section -->
+        <div class="square-section skills">
+            <h2 class="skills-header">Skills <img src="images/Hskills.jpg" alt="Skills Icon"></h2>
+            <div class="skills-container">
+                <img src="images/python.png" alt="Skill 1">
+                <p>Python</p>
+                <p2>Advanced</p2>
+            </div>
+            <div class="skills-container">
+                <img src="images/java.png" alt="Skill 2">
+                <p>Java</p>
+                <p2>Advanced</p2>
+            </div>
+            <div class="skills-container">
+                <img src="images/javascript.png" alt="Skill 3">
+                <p>JavaScript</p>
+                <p2>Advanced</p2>
+            </div>
+            <div class="skills-container">
+                <img src="images/git.png" alt="Skill 5">
+                <p>Git</p>
+                <p3>Intermediate</p3>
+            </div>
+            <div class="skills-container">
+                <img src="images/hc.png" alt="Skill 6">
+                <p>HTML & CSS</p>
+                <p2>Advanced</p2>
+            </div>
+            <div class="skills-container">
+                <img src="images/mongo.png" alt="Skill 7">
+                <p>MongoDB</p>
+                <p3>Intermediate</p3>
+            </div>
+            <div class="skills-container">
+                <img src="images/sql.png" alt="Skill 8">
+                <p>SQL</p>
+                <p4>Beginner</p4>
+            </div>
+            <div class="skills-container">
+                <img src="images/node3.png" alt="Skill 9">
+                <p>Node.js</p>
+                <p3>Intermediate</p3>
+            </div>
+        </div>
+        <div id="contact" class="square-section contact">
+            <h2>Contact Me <img src="images/Hcontact.png" alt="Contact Image" class="contact-header-image"></h2>
+            <p>Feel free to reach out to me by email:</p>
+            <form action="mailto:stevenrud77@gmail.com" method="post" enctype="text/plain">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="youremail@example.com" required>
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" placeholder="Your message here..." required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023  Steven Rud</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navbar links
+        document.querySelectorAll('.navbar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    // Adjust the scroll position to accommodate the fixed navbar height
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    window.scrollTo({
+                        top: targetSection.offsetTop - navbarHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
