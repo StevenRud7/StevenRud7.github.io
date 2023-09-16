@@ -1,1 +1,3 @@
-# StevenRud7.github.io
+# Steven Rud Website Portfolio
+
+https://stevenrud7.github.io/
