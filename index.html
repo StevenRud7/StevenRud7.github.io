@@ -184,11 +184,11 @@
 
         /* Project section styles */
         .project-section {
-            background-color: #266618;
-            background-image: url('images/green.jpg');
+            background-color: darkgreen;
+            /*background-image: url('images/green.jpg');*/
             background-size: cover;
             background-position: center;
-            border: 2px solid lime;
+            border: 2px solid white;
             color: black;
             text-align: center;
             padding: 2rem;
@@ -209,6 +209,7 @@
             display: inline;
             align-items: center;
             font-family: 'Playfair Display', serif;
+            font-weight: bolder;
         }
 
         .project-header-image {
@@ -223,13 +224,25 @@
             color: #ffffff;
             border-radius: 15px;
             padding: 1rem;
-            flex: 1;
-            margin: 0 1rem;
+            flex: 1 1 calc(33.33% - 2rem); /* Set to 33.33% for three columns, adjust as needed */
+            margin: 0.5rem;
             text-align: center;
             border: 2px solid rgb(255, 255, 255);
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            margin-bottom: 2rem;
         }
+
+        @media (max-width: 1200px) {
+            .project-container {
+                flex: 1 1 calc(50% - 2rem); /* Set to 50% for two columns on smaller screens, adjust as needed */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .project-container {
+                flex: 1 1 100%; /* Set to 100% for a single column on smaller screens */
+            }
+        }
+
 
         .project-container:hover {
             transform: translateY(-5px);
@@ -464,7 +477,7 @@
         <p>Recent Brandeis University Graduate with a Bachelor of Science Degree in Computer Science</p>
         <img src="images/profilepic.jpg" alt="Profile Picture" class="profile-img">
         <h2>About Me</h2>
-        <p>I am originally from New York City and now I am studying Computer Science at Brandeis University. 
+        <p>I am originally from New York City and I am a recent Brandeis University Graduate with a Bachelor of Science in Computer Science. 
             I've always admired Mathematics and the Sciences for their intrigue, purity, and application in
             the world. I have culminated my interest in these two fields into the study of Computer Science.
             I enjoy Computer Science for the process of problem solving various complex tasks to reach an end
@@ -516,10 +529,28 @@
                 <a href="https://github.com/StevenRud7/LEGO-Website">View Project</a></p>
         </div>
         <div class="project-container">
+            <img src="images/project4.png" alt="Project 4">
+            <h3>Letterboxd Top 4 Movie Generator and Yearly Movie Data Analysis</h3>
+            <p>This Full-Stack project was created with a Python backend and a React.js frontend with Flask and Dash libraries to create a web application that provides users with a personalized top 4selection of their top-rated movies on Letterboxd, along with a data analysis feature showcasing the top 4 movies and the average ratings over the years.
+                <a href="https://github.com/StevenRud7/Letterboxd-Top-4-Movies-and-Data-Analysis">View Project</a></p>
+        </div>
+        <div class="project-container">
             <img src="images/project3.png" alt="Project 3">
             <h3>Attention-Based Neural Machine Translation from English to Pig-Latin</h3>
             <p>Created in Python using Natural Language Processing techniques, this attention-based neural machine translates from English to Pig-Latin.
                 <a href="https://github.com/StevenRud7/Attention-Based_Neural_Machine_Translation">View Project</a></p>
+        </div>
+        <div class="project-container">
+            <img src="images/project5.png" alt="Project 5">
+            <h3>Greedy and Viterbi Bigram Taggers</h3>
+            <p>Created in Python this Natural Language Processing Project worked on taggers and utilized the Greedy Algorithm and Viterbi Algorithm for Bigram Tagging.
+                <a href="https://github.com/StevenRud7/Greedy-and-Viterbi-Bigram-Taggers">View Project</a></p>
+        </div>
+        <div class="project-container">
+            <img src="images/project6.png" alt="Project 6">
+            <h3>Dijkstra's Algorithm for Shortest Path</h3>
+            <p>Created in Java this simple Algorithm Project uses Dijkstra's Algorithm to find the shortest path in a driving simulation.
+                <a href="https://github.com/StevenRud7/Dijkstra-Algorithm-for-Shortest-Path">View Project</a></p>
         </div>
     </div>
 
