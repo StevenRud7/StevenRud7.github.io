@@ -304,16 +304,16 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const message = get('message');
 
     if (!name || !email || !message) {
-      setStatus('UPLINK FAILED — REQUIRED FIELDS MISSING', 'error'); return;
+      setStatus('MESSAGE NOT SENT — REQUIRED FIELDS MISSING', 'error'); return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setStatus('UPLINK FAILED — INVALID SIGNAL ADDRESS', 'error'); return;
+      setStatus('MESSAGE NOT SENT — INVALID SIGNAL ADDRESS', 'error'); return;
     }
 
     const sub  = subject || `Portfolio contact from ${name}`;
     const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
     window.location.href = `mailto:stevenrud77@gmail.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
-    setStatus('SIGNAL TRANSMITTED — MAIL CLIENT OPENING', 'success');
+    setStatus('MESSAGE SENT — MAIL CLIENT OPENING', 'success');
     form.reset();
   });
 

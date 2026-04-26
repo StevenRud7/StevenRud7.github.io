@@ -866,12 +866,12 @@ section {
   display: grid; grid-template-columns: 1fr 1.35fr; gap: 4rem; align-items: start;
 }
 
-/* Transmission brief */
+/* Information brief */
 .tx-brief {
   border: 1px solid rgba(14, 165, 233, 0.2); position: relative;
 }
 .tx-brief::before {
-  content: 'TRANSMISSION BRIEF';
+  content: 'INFORMATION BRIEF';
   position: absolute; top: -0.55rem; left: 1rem;
   font-family: var(--f-mono); font-size: 0.56rem;
   color: var(--blue); letter-spacing: 0.15em;
@@ -913,7 +913,7 @@ section {
   border: 1px solid rgba(123, 47, 255, 0.25); padding: 2rem; position: relative;
 }
 .contact-form::before {
-  content: 'UPLINK FORM — MISSION: HIRE';
+  content: 'CONTACT FORM';
   position: absolute; top: -0.55rem; left: 1rem;
   font-family: var(--f-mono); font-size: 0.56rem;
   color: var(--violet); letter-spacing: 0.12em;
