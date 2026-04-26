@@ -344,6 +344,7 @@ section {
 }
 .hero-name .line2 {
   display: block;
+  /* background: linear-gradient(90deg, var(--violet), var(--blue), var(--cyan)); */
   background: linear-gradient(90deg, var(--orange-dim), var(--orange), var(--orange));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -386,99 +387,85 @@ section {
   animation: fadeUp 0.7s 0.38s ease both;
 }
 
-/* Hero right — false-color heatmap canvas */
+/* Hero right — typing code block */
 .hero-right {
   position: relative; z-index: 1;
   animation: fadeUp 0.7s 0.2s ease both;
 }
-.heatmap-frame {
+ 
+.code-block-frame {
   border: 1px solid rgba(14, 165, 233, 0.3);
-  position: relative;
   background: var(--void-2);
+  position: relative;
+  overflow: hidden;
 }
-.heatmap-frame::before {
-  content: 'FIG. A — SKILL DENSITY THERMAL ANALYSIS';
-  position: absolute; top: -0.55rem; left: 50%; transform: translateX(-50%);
-  font-family: var(--f-mono); font-size: 0.56rem; color: var(--plasma-faint);
-  letter-spacing: 0.1em; background: var(--void-2); padding: 0 0.5rem;
-  white-space: nowrap;
+ 
+/* Window chrome bar */
+.code-block-bar {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  background: rgba(14, 165, 233, 0.06);
+  border-bottom: 1px solid rgba(14, 165, 233, 0.15);
 }
-#heatmap-canvas { display: block; width: 100%; }
-
-/* Color scale legend */
-.color-scale {
-  display: flex; align-items: center; gap: 0; padding: 0.6rem 1rem;
-  border-top: 1px solid rgba(14, 165, 233, 0.2);
+.code-block-dots { display: flex; gap: 0.35rem; }
+.code-block-dot {
+  width: 10px; height: 10px; border-radius: 50%;
 }
-.color-scale-bar {
-  flex: 1; height: 8px;
-  background: linear-gradient(90deg,
-    #000080 0%, #0000ff 15%, #00ffff 30%,
-    #00ff00 45%, #ffff00 60%,
-    var(--orange) 75%, #ff0000 90%, #ffffff 100%
-  );
-  margin: 0 0.6rem;
+.code-block-dot:nth-child(1) { background: #ff5f57; }
+.code-block-dot:nth-child(2) { background: #febc2e; }
+.code-block-dot:nth-child(3) { background: #28c840; }
+.code-block-filename {
+  font-family: var(--f-mono); font-size: 0.6rem; color: var(--plasma-faint);
+  letter-spacing: 0.08em; margin: 0 auto;
 }
-.color-scale-label {
-  font-family: var(--f-mono); font-size: 0.56rem; color: var(--plasma-faint);
-  letter-spacing: 0.06em;
+ 
+/* Code body */
+.code-block-body {
+  padding: 1.2rem 1.4rem;
+  font-family: var(--f-mono); font-size: 0.78rem; line-height: 1.85;
+  letter-spacing: 0.02em;
+  /* Fixed height with hidden overflow — no scroll, no reflow */
+  height: 320px;
+  overflow: hidden;
+  position: relative;
+}
+ 
+/* Blinking cursor */
+.code-cursor {
+  display: inline-block;
+  width: 7px; height: 1.1em;
+  background: var(--cyan);
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.95s step-end infinite;
+  margin-left: 1px;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+ 
+/* Syntax token colours */
+.t-key     { color: var(--violet); }           /* dict keys / field names */
+.t-str     { color: var(--cyan); }             /* string values */
+.t-num     { color: var(--orange); }           /* numbers */
+.t-bool    { color: #FF6B1A; }                 /* True / False */
+.t-kw      { color: var(--blue); }             /* keywords: class, def, @dataclass */
+.t-cls     { color: var(--yellow); }           /* class name */
+.t-cmt     { color: var(--plasma-faint); font-style: italic; } /* comments */
+.t-punc    { color: var(--plasma-dim); }       /* brackets, colons, commas */
+.t-name    { color: var(--plasma); }           /* plain identifiers */
+.t-list    { color: var(--plasma-dim); }       /* list brackets */
+ 
+/* Bottom gradient fade — hides abrupt cut-off */
+.code-block-body::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2.5rem;
+  background: linear-gradient(transparent, var(--void-2));
+  pointer-events: none;
 }
 
 /* Spectral band separator after hero */
 .hero-band { margin-top: 4rem; }
-
-/* ── ORBITAL RING DIAGRAM (hero right) ──────────────────── */
-.orbital-frame {
-  border: 1px solid rgba(14, 165, 233, 0.3);
-  background: var(--void-2);
-  padding: 1rem 1rem 0.6rem;
-  position: relative;
-}
-.orbital-caption {
-  font-family: var(--f-mono); font-size: 0.56rem; color: var(--plasma-faint);
-  letter-spacing: 0.1em; text-align: center;
-  margin-bottom: 0.5rem;
-}
-#orbital-svg {
-  display: block; width: 100%; height: auto;
-  /* rings rotate via CSS — no JS loop needed */
-}
-#orbital-svg .ring-inner {
-  animation: orbitCW  22s linear infinite;
-  transform-origin: 190px 190px;
-}
-#orbital-svg .ring-mid {
-  animation: orbitCCW 32s linear infinite;
-  transform-origin: 190px 190px;
-}
-#orbital-svg .ring-outer {
-  animation: orbitCW  44s linear infinite;
-  transform-origin: 190px 190px;
-}
-/* Pause on hover for readability */
-.orbital-frame:hover #orbital-svg .ring-inner,
-.orbital-frame:hover #orbital-svg .ring-mid,
-.orbital-frame:hover #orbital-svg .ring-outer {
-  animation-play-state: paused;
-}
-@keyframes orbitCW  { from { transform: rotate(0deg);    } to { transform: rotate(360deg);  } }
-@keyframes orbitCCW { from { transform: rotate(0deg);    } to { transform: rotate(-360deg); } }
-
-.orbital-legend {
-  display: flex; justify-content: center; gap: 1.2rem;
-  padding: 0.5rem 0 0.3rem;
-  border-top: 1px solid rgba(14, 165, 233, 0.15);
-}
-.oleg {
-  font-family: var(--f-mono); font-size: 0.55rem;
-  letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.35rem;
-}
-.oleg::before {
-  content: '●'; font-size: 0.5rem;
-}
-.oleg-1 { color: var(--violet); }
-.oleg-2 { color: var(--blue); }
-.oleg-3 { color: var(--cyan); }
 
 /* ── ABOUT ──────────────────────────────────────────────── */
 #about { background: var(--void); }
@@ -487,7 +474,7 @@ section {
   display: grid; grid-template-columns: 1.7fr 1fr; gap: 5rem; align-items: start;
 }
 
-/* Mission briefing panel */
+/* About Profile Panel */
 .mission-brief {
   border: 1px solid rgba(14, 165, 233, 0.2);
   position: relative; margin-bottom: 1.5rem;

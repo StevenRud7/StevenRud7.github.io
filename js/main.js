@@ -58,186 +58,138 @@
   container.appendChild(frag);
 })();
 
-// ── ORBITAL RING DIAGRAM ─────────────────────────────────
-(function initOrbital() {
-  const svg = document.getElementById('orbital-svg');
-  if (!svg) return;
+// ── TYPING CODE BLOCK ────────────────────────────────────────
+(function initTypingCode() {
+  const body   = document.getElementById('code-body');
+  const cursor = document.getElementById('code-cursor');
+  if (!body || !cursor) return;
 
-  const ns  = 'http://www.w3.org/2000/svg';
-  const CX  = 190, CY = 190; // centre
+  // The full code to type out, as an array of {html, pause} segments.
+  // html is inserted directly (pre-coloured spans).
+  // pause is ms to wait after inserting this segment before continuing.
+  const C = {
+    kw:   s => `<span class="t-kw">${s}</span>`,
+    cls:  s => `<span class="t-cls">${s}</span>`,
+    key:  s => `<span class="t-key">${s}</span>`,
+    str:  s => `<span class="t-str">${s}</span>`,
+    num:  s => `<span class="t-num">${s}</span>`,
+    bool: s => `<span class="t-bool">${s}</span>`,
+    cmt:  s => `<span class="t-cmt">${s}</span>`,
+    p:    s => `<span class="t-punc">${s}</span>`,
+    nm:   s => `<span class="t-name">${s}</span>`,
+  };
 
-  // Ring definitions: radius, rotation speed class, colour, technologies
-  const rings = [
-    {
-      r: 62,
-      cls: 'ring-inner',
-      color: '#7B2FFF',   // violet — core languages
-      glow: 'rgba(123,47,255,0.45)',
-      techs: ['Python', 'Java', 'JavaScript', 'SQL'],
-    },
-    {
-      r: 108,
-      cls: 'ring-mid',
-      color: '#0EA5E9',   // blue — frameworks
-      glow: 'rgba(14,165,233,0.4)',
-      techs: ['React', 'Node.js', 'Flask', 'MongoDB'],
-    },
-    {
-      r: 155,
-      cls: 'ring-outer',
-      color: '#22D3EE',   // cyan — tools / infra
-      glow: 'rgba(34,211,238,0.35)',
-      techs: ['Git', 'Docker', 'Linux', 'REST APIs', 'HTML/CSS'],
-    },
+  // Each entry: [html string to append, delay BEFORE this token in ms]
+  const tokens = [
+    // Line 1: comment
+    [C.cmt('# developer.py'), 0],
+    ['\n', 20],
+
+    // Line 2: blank
+    ['\n', 60],
+
+    // Line 3: @dataclass
+    [C.kw('@dataclass'), 40],
+    ['\n', 30],
+
+    // Line 4: class Developer
+    [C.kw('class ') + C.cls('Developer') + C.p(':'), 30],
+    ['\n', 30],
+
+    // Field: name
+    ['    ' + C.key('name') + C.p(': ') + C.nm('str') + ' = ' + C.str('"Steven Rud"'), 60],
+    ['\n', 20],
+
+    // Field: degree
+    ['    ' + C.key('degree') + C.p(': ') + C.nm('str') + ' = ' + C.str('"B.S. Computer Science"'), 50],
+    ['\n', 20],
+
+    // Field: university
+    ['    ' + C.key('university') + C.p(': ') + C.nm('str') + ' = ' + C.str('"Brandeis University"'), 50],
+    ['\n', 20],
+
+    // Field: status
+    ['    ' + C.key('status') + C.p(': ') + C.nm('str') + ' = ' + C.str('"open to work"'), 50],
+    ['\n', 20],
+
+    // Blank line inside class
+    ['\n', 40],
+
+    // Field: languages list
+    ['    ' + C.key('languages') + C.p(': ') + C.nm('list') + ' ' + C.p('= ['), 60],
+    ['\n', 20],
+    ['        ' + C.str('"Python"') + C.p(',') + ' ' + C.str('"Java"') + C.p(',') + ' ' + C.str('"JavaScript"') + C.p(',') + ' ' + C.str('"SQL"'), 40],
+    ['\n', 20],
+    ['    ' + C.p(']'), 30],
+    ['\n', 20],
+
+    // Field: frameworks
+    ['    ' + C.key('frameworks') + C.p(': ') + C.nm('list') + ' ' + C.p('= ['), 60],
+    ['\n', 20],
+    ['        ' + C.str('"React"') + C.p(',') + ' ' + C.str('"Node.js"') + C.p(',') + ' ' + C.str('"Flask"'), 40],
+    ['\n', 20],
+    ['    ' + C.p(']'), 30],
+    ['\n', 20],
+
+    // Field: tools
+    ['    ' + C.key('tools') + C.p(': ') + C.nm('list') + ' ' + C.p('= ['), 60],
+    ['\n', 20],
+    ['        ' + C.str('"Git"') + C.p(',') + ' ' + C.str('"Docker"') + C.p(',') + ' ' + C.str('"Azure"'), 40],
+    ['\n', 20],
+    ['    ' + C.p(']'), 30],
+    ['\n', 20],
+
+    // Blank line
+    ['\n', 40],
+
+    // Method: introduce
+    ['    ' + C.kw('def ') + C.nm('introduce') + C.p('(') + C.nm('self') + C.p(') -> ') + C.nm('str') + C.p(':'), 80],
+    ['\n', 20],
+    ['        ' + C.kw('return ') + C.p('('), 40],
+    ['\n', 20],
+    ['            ' + C.str('"CS Graduate. Developer. Open to work."'), 40],
+    ['\n', 20],
+    ['        ' + C.p(')'), 30],
+    ['\n', 20],
   ];
 
-  function el(tag, attrs) {
-    const e = document.createElementNS(ns, tag);
-    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
-    return e;
+  let idx = 0;
+  let started = false;
+
+  function typeNext() {
+    if (idx >= tokens.length) {
+      // Done — cursor keeps blinking, optionally restart after long pause
+      setTimeout(() => {
+        body.innerHTML = '';
+        idx = 0;
+        // Move cursor back inside body before restarting
+        body.appendChild(cursor);
+        setTimeout(typeNext, 600);
+      }, 6000);
+      return;
+    }
+    const [html, delay] = tokens[idx++];
+    setTimeout(() => {
+      // Insert before cursor
+      const temp = document.createElement('span');
+      temp.innerHTML = html;
+      body.insertBefore(temp, cursor);
+      typeNext();
+    }, delay);
   }
 
-  // ── Defs (glow filters) ──────────────────────────────
-  const defs = el('defs', {});
+  // Start typing when hero scrolls into view
+  const hero = document.getElementById('hero');
+  if (!hero) { typeNext(); return; }
 
-  rings.forEach((ring, i) => {
-    const filter = el('filter', { id: `glow${i}`, x: '-50%', y: '-50%', width: '200%', height: '200%' });
-    const blur   = el('feGaussianBlur', { stdDeviation: '3', result: 'blur' });
-    const merge  = el('feMerge', {});
-    const m1 = el('feMergeNode', { in: 'blur' });
-    const m2 = el('feMergeNode', { in: 'SourceGraphic' });
-    merge.appendChild(m1); merge.appendChild(m2);
-    filter.appendChild(blur); filter.appendChild(merge);
-    defs.appendChild(filter);
-  });
-
-  // Radial gradient for centre core
-  const coreGrad = el('radialGradient', { id: 'coreGrad', cx: '50%', cy: '50%', r: '50%' });
-  const cs1 = el('stop', { offset: '0%',   'stop-color': '#7B2FFF', 'stop-opacity': '0.9' });
-  const cs2 = el('stop', { offset: '100%', 'stop-color': '#050810', 'stop-opacity': '0' });
-  coreGrad.appendChild(cs1); coreGrad.appendChild(cs2);
-  defs.appendChild(coreGrad);
-
-  svg.appendChild(defs);
-
-  // ── Background: space void + subtle radial nebula ────
-  svg.appendChild(el('rect', { x: 0, y: 0, width: 380, height: 380, fill: '#080e1c' }));
-  svg.appendChild(el('circle', { cx: CX, cy: CY, r: 170, fill: 'url(#coreGrad)', opacity: '0.25' }));
-
-  // Fine background grid
-  for (let x = 0; x < 380; x += 19) {
-    svg.appendChild(el('line', { x1: x, y1: 0, x2: x, y2: 380,
-      stroke: 'rgba(14,165,233,0.06)', 'stroke-width': 0.5 }));
-  }
-  for (let y = 0; y < 380; y += 19) {
-    svg.appendChild(el('line', { x1: 0, y1: y, x2: 380, y2: y,
-      stroke: 'rgba(14,165,233,0.06)', 'stroke-width': 0.5 }));
-  }
-
-  // ── Reference orbit tracks (static, faint) ──────────
-  rings.forEach(ring => {
-    svg.appendChild(el('circle', {
-      cx: CX, cy: CY, r: ring.r,
-      fill: 'none',
-      stroke: ring.color,
-      'stroke-width': 0.6,
-      'stroke-dasharray': '3 6',
-      opacity: 0.25,
-    }));
-  });
-
-  // ── Crosshair on centre ──────────────────────────────
-  svg.appendChild(el('line', { x1: CX - 12, y1: CY, x2: CX + 12, y2: CY,
-    stroke: 'rgba(14,165,233,0.35)', 'stroke-width': 0.8 }));
-  svg.appendChild(el('line', { x1: CX, y1: CY - 12, x2: CX, y2: CY + 12,
-    stroke: 'rgba(14,165,233,0.35)', 'stroke-width': 0.8 }));
-
-  // ── Centre core dot ──────────────────────────────────
-  svg.appendChild(el('circle', { cx: CX, cy: CY, r: 18,
-    fill: 'none', stroke: '#7B2FFF', 'stroke-width': 1,
-    filter: 'url(#glow0)', opacity: 0.7 }));
-  svg.appendChild(el('circle', { cx: CX, cy: CY, r: 5,
-    fill: '#7B2FFF', filter: 'url(#glow0)' }));
-
-  // Centre label
-  const cLbl = document.createElementNS(ns, 'text');
-  cLbl.setAttribute('x', CX); cLbl.setAttribute('y', CY + 26);
-  cLbl.setAttribute('fill', '#b4c8e8');
-  cLbl.setAttribute('font-family', 'IBM Plex Mono, monospace');
-  cLbl.setAttribute('font-size', '7.5');
-  cLbl.setAttribute('text-anchor', 'middle');
-  cLbl.setAttribute('letter-spacing', '0.12em');
-  cLbl.textContent = 'DEV';
-  svg.appendChild(cLbl);
-
-  // ── Rotating groups ──────────────────────────────────
-  rings.forEach((ring, ri) => {
-    const g = el('g', { class: ring.cls });
-
-    // Distribute tech nodes evenly around the ring
-    ring.techs.forEach((tech, ti) => {
-      const count   = ring.techs.length;
-      const angleDeg = (360 / count) * ti - 90; // start from top
-      const angleRad = angleDeg * Math.PI / 180;
-      const nx = CX + ring.r * Math.cos(angleRad);
-      const ny = CY + ring.r * Math.sin(angleRad);
-
-      // Connector line from centre to node (faint)
-      const connector = el('line', {
-        x1: CX, y1: CY, x2: nx, y2: ny,
-        stroke: ring.color, 'stroke-width': 0.4, opacity: 0.15,
-      });
-      g.appendChild(connector);
-
-      // Node dot
-      const dot = el('circle', {
-        cx: nx, cy: ny, r: 5,
-        fill: ring.color,
-        filter: `url(#glow${ri})`,
-        opacity: 0.9,
-      });
-      g.appendChild(dot);
-
-      // Inner accent dot
-      g.appendChild(el('circle', { cx: nx, cy: ny, r: 2.5, fill: '#E8F4FF', opacity: 0.8 }));
-
-      // Label — counter-rotates so it always reads upright
-      // We put it in a nested group that reverses the parent rotation at render time
-      // Using a trick: the label group has no transform here; CSS animation handles
-      // the parent. Labels will orbit but remain legible because we apply a
-      // counter-rotation transform via an animateTransform on each label group.
-      const labelGroup = el('g', {});
-
-      // Background pill for readability
-      const labelPad = 3;
-      const approxW  = tech.length * 4.8 + labelPad * 2;
-      const pillX    = nx + (nx > CX ? 8 : -8 - approxW);
-      const pillY    = ny + (ny > CY ? 8 : -18);
-
-      const pill = el('rect', {
-        x: pillX, y: pillY,
-        width: approxW, height: 13,
-        rx: 2,
-        fill: 'rgba(8,14,28,0.85)',
-        stroke: ring.color, 'stroke-width': 0.5, 'stroke-opacity': 0.5,
-      });
-      labelGroup.appendChild(pill);
-
-      const lbl = document.createElementNS(ns, 'text');
-      lbl.setAttribute('x', pillX + labelPad);
-      lbl.setAttribute('y', pillY + 9);
-      lbl.setAttribute('fill', ring.color);
-      lbl.setAttribute('font-family', 'IBM Plex Mono, monospace');
-      lbl.setAttribute('font-size', '7.5');
-      lbl.setAttribute('letter-spacing', '0.04em');
-      lbl.textContent = tech;
-      labelGroup.appendChild(lbl);
-
-      g.appendChild(labelGroup);
-    });
-
-    svg.appendChild(g);
-  });
+  const io = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !started) {
+      started = true;
+      io.disconnect();
+      setTimeout(typeNext, 700); // slight initial delay
+    }
+  }, { threshold: 0.3 });
+  io.observe(hero);
 })();
 
 // ── SCROLL REVEAL ────────────────────────────────────────────
