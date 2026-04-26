@@ -80,14 +80,14 @@
       cls: 'ring-mid',
       color: '#0EA5E9',   // blue — frameworks
       glow: 'rgba(14,165,233,0.4)',
-      techs: ['React', 'Node.js', 'Flask', 'Express', 'MongoDB'],
+      techs: ['React', 'Node.js', 'Flask', 'MongoDB'],
     },
     {
       r: 155,
       cls: 'ring-outer',
       color: '#22D3EE',   // cyan — tools / infra
       glow: 'rgba(34,211,238,0.35)',
-      techs: ['Git', 'Docker', 'AWS', 'Linux', 'REST APIs', 'HTML/CSS'],
+      techs: ['Git', 'Docker', 'Linux', 'REST APIs', 'HTML/CSS'],
     },
   ];
 
