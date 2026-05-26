@@ -677,7 +677,7 @@ section {
 
 .proj-card {
   /* Fixed height — all cards identical */
-  height: 530px;
+  height: 555px;
   padding: 1.6rem;
   background: var(--void-2);
   display: flex; flex-direction: column;
